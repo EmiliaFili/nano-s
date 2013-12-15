@@ -1,7 +1,10 @@
-from django.utils.timezone import now as tznow
+from __future__ import unicode_literals
 
+from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import now as tznow
 from django.db import models
 
+@python_2_unicode_compatible
 class QA(models.Model):
     question = models.CharField(max_length=255)
     answer = models.TextField()
@@ -10,7 +13,7 @@ class QA(models.Model):
     class Meta:
         db_table = 'nano_faq_qa'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.question
 
     def save(self, *args, **kwargs):

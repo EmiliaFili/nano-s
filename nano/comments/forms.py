@@ -1,7 +1,8 @@
+from __future__ import unicode_literals
+
 from django import forms
 from django.utils.translation import ungettext, ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import force_unicode
 
 from nano.comments import COMMENT_MAX_LENGTH
 from nano.comments.models import Comment

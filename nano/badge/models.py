@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+
+from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.conf import settings
@@ -15,6 +18,7 @@ class BadgeRecipientManager(models.Manager):
         User = get_user_model()
         return User.objects.exclude(badges__isnull=False)
 
+@python_2_unicode_compatible
 class Badge(models.Model):
     """
     Three fields:
@@ -34,6 +38,6 @@ class Badge(models.Model):
     class Meta:
         db_table = 'nano_badge_badge'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import Http404, HttpResponseRedirect
@@ -18,8 +20,8 @@ def get_user(request, **kwargs):
         return User.objects.get(username=username)
     except User.DoesNotExist:
         pass
-    user = kwargs.get(u'user', None) or request.REQUEST.get(u'user', None)
-    object_id = kwargs.get(u'object_id', None) or request.REQUEST.get(u'object_id', None)
+    user = kwargs.get('user', None) or request.REQUEST.get('user', None)
+    object_id = kwargs.get('object_id', None) or request.REQUEST.get('object_id', None)
     uid = filter(None, (user, object_id))[0]
     try:
         return User.objects.get(id=int(uid))
@@ -38,7 +40,7 @@ def _archive(user, recipient, msgids):
 def move_to_archive(request, *args, **kwargs):
     next = request.GET.get('next', None)
     recipient = get_user(request, **kwargs)
-    msgid = int(kwargs.get(u'msgid', None))
+    msgid = int(kwargs.get('msgid', None))
     _archive(request.user, recipient, (msgid,))
     if next:
         return HttpResponseRedirect(next)
@@ -59,7 +61,7 @@ def _delete(user, msgid):
 @login_required
 def delete(request, *args, **kwargs):
     next = request.GET.get('next', None)
-    msgid = int(kwargs.get(u'msgid', None))
+    msgid = int(kwargs.get('msgid', None))
     _delete(request.user, msgid)
     if next:
         return HttpResponseRedirect(next)
@@ -105,20 +107,20 @@ def show_pms(request, *args, **kwargs):
     if recipient != request.user:
         raise Http404
     ACTIONS = {
-        u'archive': PM.objects.archived,
-        u'sent': PM.objects.sent,
-        u'received': PM.objects.received,
+        'archive': PM.objects.archived,
+        'sent': PM.objects.sent,
+        'received': PM.objects.received,
     }
-    actionstr = kwargs.get(u'action', None) or u'received'
+    actionstr = kwargs.get('action', None) or 'received'
     action = ACTIONS[actionstr]
     messages = action(request.user)
     if request.method == 'POST':
-        msgids = request.POST.getlist(u'msgid')
-        action = request.POST.get(u'submit')
+        msgids = request.POST.getlist('msgid')
+        action = request.POST.get('submit')
         #assert False, '%s %s' % (action, msgids)
-        if action == u'delete':
+        if action == 'delete':
             _delete(request.user, msgids[0])
-        elif action == u'archive':
+        elif action == 'archive':
             _archive(request.user, recipient, msgids)
     template = 'privmsg/archive.html'
     data = {'pms': messages,

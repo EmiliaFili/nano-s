@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+
+from django.utils.encoding import force_text
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as tznow
 from django.conf import settings
 from django.db import models
@@ -6,6 +10,7 @@ from nano.tools.models import UnorderedTreeMixin, GenericForeignKeyAbstractModel
 
 COMMENT_MAX_LENGTH = getattr(settings,'COMMENT_MAX_LENGTH',3000)
 
+@python_2_unicode_compatible
 class Comment(GenericForeignKeyAbstractModel, UnorderedTreeMixin):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
             blank=True, null=True, related_name="%(class)s_comments") 
@@ -22,7 +27,7 @@ class Comment(GenericForeignKeyAbstractModel, UnorderedTreeMixin):
         ordering = ('added',)
         get_latest_by = 'added'
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s: %s..." % (self.user, self.comment[:49]+'...' if len(self.comment) > 50 else self.comment)    
         
     def get_content_object_url(self):
@@ -41,7 +46,7 @@ class Comment(GenericForeignKeyAbstractModel, UnorderedTreeMixin):
 
     def get_path(self):
         return [self._default_manager.get(id=p).filter(content_type=self.content_type, object_pk=self.object_pk) 
-                for p in unicode(self.path).split(self._sep) if p]
+                for p in force_text(self.path).split(self._sep) if p]
 
     def descendants(self):
         tree = self._default_manager.filter(path__startswith=self.path).exclude(id=self.id)

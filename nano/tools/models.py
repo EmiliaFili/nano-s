@@ -2,7 +2,9 @@
 Mixin-models, with minimal example implementations.
 
 """
+from __future__ import unicode_literals
 
+from django.utils.encoding import force_text
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core import urlresolvers
@@ -29,7 +31,7 @@ class UnorderedTreeMixin(models.Model):
 
     tree = UnorderedTreeManager()
 
-    _sep = u'/'
+    _sep = '/'
 
     class Meta:
         abstract = True
@@ -52,7 +54,7 @@ class UnorderedTreeMixin(models.Model):
     @property
     def level(self):
         "Count how far down in the tree self is"
-        return unicode(self.path).count(self._sep)
+        return force_text(self.path).count(self._sep)
 
     def roots(self):
         "Get all roots, nodes without parents"
@@ -60,7 +62,7 @@ class UnorderedTreeMixin(models.Model):
 
     def get_path(self):
         "Get all ancestors, ordered from root to self"
-        return [self._default_manager.get(id=p) for p in unicode(self.path).split(self._sep) if p]
+        return [self._default_manager.get(id=p) for p in force_text(self.path).split(self._sep) if p]
 
     def descendants(self):
         "Get all descendants in no particular order"

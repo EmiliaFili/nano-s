@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+
+from django.utils.encoding import force_text
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.views import redirect_to_login
@@ -58,7 +61,7 @@ def toggle_mark(request, allow_xmlhttprequest=False):
         mark, created = Mark.objects.get_or_create(
                 marked_by=request.user, 
                 marktype=marktype, 
-                object_pk=unicode(object.pk), 
+                object_pk=force_text(object.pk), 
                 content_type=ct,
                 )
         if not (created or mark.marktype.permanent):
@@ -70,7 +73,7 @@ def toggle_mark(request, allow_xmlhttprequest=False):
         if hasattr(request, 'notifications'):
             flip = {'flag': 'flagged', 'fave': 'faved'}
             request.notifications.add("You've now %s %s as %s" %
-            (u'marked' if created else u'unmarked', object, flip.get(mark.marktype.slug, mark.marktype.slug)))
+            ('marked' if created else 'unmarked', object, flip.get(mark.marktype.slug, mark.marktype.slug)))
 
         if mark.marktype.verify:
             callable = 'nano_mark_verify_%s' % marktype.type

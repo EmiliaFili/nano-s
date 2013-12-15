@@ -1,4 +1,7 @@
 # -*- coding: UTF-8 -*-
+from __future__ import unicode_literals
+
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as tznow
 from django.db import models
 from django.conf import settings
@@ -31,7 +34,7 @@ class PMManager(models.Manager):
                 recipient_archived=False, 
                 recipient_deleted=False
                 )
-
+@python_2_unicode_compatible
 class PM(AbstractText):
     subject = models.CharField(max_length=64, blank=True, default='')
     sent = models.DateTimeField(default=tznow, editable=False)
@@ -48,7 +51,7 @@ class PM(AbstractText):
     class Meta:
         db_table = 'nano_privmsg_pm'
 
-    def __unicode__(self):
+    def __str__(self):
         if self.subject:
             return self.subject
         else:
@@ -59,7 +62,7 @@ class PM(AbstractText):
             snippet = self.text[:64]
             ls = len(snippet)
             if ls == 64 and ls < len(self.text):
-                snippet = snippet[:-1] + u'…'
+                snippet = snippet[:-1] + '…'
             self.subject = snippet
         super(PM, self).save(*args, **kwargs)
 

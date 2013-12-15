@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from random import choice, sample
 import string
 
@@ -70,7 +72,7 @@ def make_user(username, password, email=None, request=None):
         else:
             new_user_created.send(sender=User, user=user) 
         if request is not None:
-            infomsg = u"You're now registered, as '%s'" % username
+            infomsg = 'You\'re now registered, as "%s"' % username
             messages.info(request, infomsg)
             _LOG.debug('Created user: %s/%s' % (user, user.check_password(password)))
         return user
@@ -92,7 +94,7 @@ def signup(request, template_name='signup.html', *args, **kwargs):
             password = form.cleaned_data['password2']
             email = form.cleaned_data['email'].strip() or ''
 
-            errormsg = u'Username "%s" is taken'
+            errormsg = 'Username "%s" is taken'
 
             # check that username not taken
             userslug = slugify(username)
@@ -133,7 +135,7 @@ def password_change(request, *args, **kwargs):
     if request.method == "POST":
         form = PasswordChangeForm(request.POST)
         if form.is_valid():
-            password = form.cleaned_data[u'password2']
+            password = form.cleaned_data['password2']
             user = request.user
             user.set_password(password)
             user.save()

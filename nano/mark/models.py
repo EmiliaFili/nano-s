@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+
+from django.utils.encoding import force_text
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now as tznow
 from django.template.defaultfilters import slugify
 from django.contrib.contenttypes.models import ContentType
@@ -18,7 +22,7 @@ class MarkedMixin(models.Model):
 
     def marks(self):
         ct = ContentType.objects.get_for_model(self)
-        return Mark.objects.filter(content_type = ct, object_pk = unicode(self.pk))
+        return Mark.objects.filter(content_type = ct, object_pk = force_text(self.pk))
     
     def flagged(self):
         return self.marks.filter(marktype__slug='flag')
@@ -37,6 +41,7 @@ class MarkedMixin(models.Model):
         marks = self.marks.filter(marktype__slug='flag')
         return True if marks.filter(marktype__hide=True) else False
 
+@python_2_unicode_compatible
 class MarkType(models.Model):
     name = models.CharField(max_length=32)
     slug = models.SlugField(unique=True)
@@ -47,13 +52,14 @@ class MarkType(models.Model):
     class Meta:
         db_table='nano_mark_marktype'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(MarkType, self).save(*args, **kwargs)
 
+@python_2_unicode_compatible
 class Mark(GenericForeignKeyAbstractModel):
     marked_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'), related_name="marks")
     marked_at = models.DateTimeField(_('date/time marked'), default=tznow)
@@ -70,7 +76,7 @@ class Mark(GenericForeignKeyAbstractModel):
         ordering = ('marked_at',)
         get_latest_by = 'marked_at'
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s have marked %s" % (self.marked_by, self.content_object)    
 
     def save(self, parent=None, *args, **kwargs):

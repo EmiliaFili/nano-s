@@ -1,8 +1,9 @@
+from __future__ import unicode_literals
+
 from django import template
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import smart_unicode
 
 from nano import comments
 from nano.comments.models import * 

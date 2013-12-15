@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+
+from django.utils.encoding import python_2_unicode_compatible
 import django.dispatch
 from django.conf import settings
 from django.db import models
@@ -40,6 +43,7 @@ class KeyManager(models.Manager):
     def activate(self, *args):
         return activate(*args)
 
+@python_2_unicode_compatible
 class Key(models.Model):
     key = models.CharField(max_length=255)
     group = models.SlugField(max_length=32, blank=True, null=True)
@@ -55,7 +59,7 @@ class Key(models.Model):
         ordering = ('-pub_date',)
         get_latest_by = 'pub_date'
 
-    def __unicode__(self):
+    def __str__(self):
         pp_pub_date = self.pub_date
         pp_expires = self.expires or ''
         return u"%s (%s) %s %s" % (self.key, self.group, pp_pub_date, pp_expires)

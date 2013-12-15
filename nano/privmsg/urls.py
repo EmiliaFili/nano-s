@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.conf.urls import *
 
 from nano.privmsg import views
@@ -12,4 +14,3 @@ urlpatterns = patterns('',
     url(r'^$', views.show_pm_received, name='show_pms'),
     #url(r'^$', views.show_pms, {u'action': u'received'}, name='show_pms'),
 )
-

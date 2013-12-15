@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # vim: set fileencoding=utf-8 :
+from __future__ import unicode_literals
 
 from math import modf, floor, ceil
 
@@ -32,7 +33,7 @@ def nbr(text):
     """Replace whitespace with non-breaking-space"""
 
     pieces = text.split()
-    text = u'\xa0'.join(pieces)
+    text = '\xa0'.join(pieces)
     return text.encode('utf8')
 nbr.is_safe = True
 
@@ -68,7 +69,7 @@ def fraction(text, arg=1):
     lf = len(fraction)
     fraction = fraction[:arg]
     if arg > lf:
-        fraction = u'%s%s' % (fraction, '0'*(arg-lf))
+        fraction = '%s%s' % (fraction, '0'*(arg-lf))
     return fraction
 fraction.is_safe = True
 
