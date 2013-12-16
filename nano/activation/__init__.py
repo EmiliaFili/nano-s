@@ -9,10 +9,10 @@ BASE = len(NUMERALS)
 def to_base(num, base, numerals=NUMERALS):
     """Convert <num> to <base> using the symbols in <numerals>"""
 
-    assert int(num)
-    assert int(base)
-    if len(numerals) < base < 1:
-        raise ValueError("str_base: base must be between 1 and %i" % len(numerals))
+    int(num)
+    int(base)
+    if not (0 < base < len(numerals)):
+        raise ValueError("<base> must be in the range [1, %i>" % len(numerals))
 
     if num == 0:
         return '0'
@@ -44,6 +44,6 @@ def baseNgenerator(base=10, keylength=5, step=1):
 def generate_keys(generator, amount=50):
     """Generate <amount> keys with <generator>"""
 
-    keys = set(generator.next() for i in range(amount))
+    keys = set(next(generator) for i in range(amount))
     return tuple(keys)
 

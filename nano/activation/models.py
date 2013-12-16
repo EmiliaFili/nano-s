@@ -14,21 +14,14 @@ class ActivationKeyError(ActivationError):
     pass
 
 def activate(keystring, user):
-    """Activates a specific key for user, returns True on activation,
+    """Attempts to activate a specific key for user, returns activated key on activation,
     raises an exception otherwise"""
-    now = tznow()
     try:
         key = Key.objects.get(key=keystring)
     except Key.DoesNotExist:
         raise ActivationKeyError('Key %s does not exist, typo?' % keystring)
-    if key.expires and key.expires <= now:
-        raise ActivationKeyError('Key expired on %s' % key.expires)
-    if key.activated:
-        raise ActivationKeyError('Key has already been activated')
-    key.activated_by = user
-    key.activated = now
-    key.save()
-    key_activated.send_robust(sender=key, user=user, group=key.group)
+    key.activate(user)
+    return key
 
 class KeyManager(models.Manager):
 
@@ -68,4 +61,15 @@ class Key(models.Model):
         return u"%s (%s) %s %s" % (self.key, self.group, pp_pub_date, pp_expires)
 
     def activate(self, user):
-        return activate(self.key, user)
+        """Activates a specific key for user, returns activated key on activation,
+        raises an exception otherwise"""
+        now = tznow()
+        if self.expires and self.expires <= now:
+            raise ActivationKeyError('Key expired on %s' % self.expires)
+        if self.activated:
+            raise ActivationKeyError('Key has already been activated')
+        self.activated_by = user
+        self.activated = now
+        self.save()
+        key_activated.send_robust(sender=self, user=user, group=self.group)
+        return self
