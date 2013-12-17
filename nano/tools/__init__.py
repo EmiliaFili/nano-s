@@ -29,9 +29,6 @@ def asciify(string):
     string = unicodedata.normalize('NFKD', string)
     return string.encode('ascii', 'ignore')
 
-def render_page(request, *args, **kwargs):
-    return render(request, *args, **kwargs)
-
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
