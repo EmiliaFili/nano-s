@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+
 from math import ceil
 
 from django import template

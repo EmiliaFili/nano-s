@@ -62,7 +62,7 @@ class Key(models.Model):
     def __str__(self):
         pp_pub_date = self.pub_date
         pp_expires = self.expires or ''
-        return u"%s (%s) %s %s" % (self.key, self.group, pp_pub_date, pp_expires)
+        return "%s (%s) %s %s" % (self.key, self.group, pp_pub_date, pp_expires)
 
     def activate(self, user):
         """Activates a specific key for user, returns activated key on activation,

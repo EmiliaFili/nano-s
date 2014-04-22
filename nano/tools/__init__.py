@@ -1,6 +1,12 @@
+from __future__ import unicode_literals
+
 import logging
 import unicodedata
-from itertools import izip_longest
+
+try: # py3
+    from itertools import zip_longest
+except ImportError: # py2
+    from itertools import izip_longest as zip_longest
 
 _LOG = logging.getLogger(__name__)
 
@@ -32,7 +38,7 @@ def asciify(string):
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
     args = [iter(iterable)] * n
-    return izip_longest(fillvalue=fillvalue, *args)
+    return zip_longest(fillvalue=fillvalue, *args)
 
 def get_profile_model(raise_on_error=True):
     if not getattr(settings, 'AUTH_PROFILE_MODULE', False):

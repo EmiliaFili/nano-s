@@ -1,5 +1,4 @@
-import urllib
-from urlparse import urlparse
+from __future__ import unicode_literals
 
 import logging
 _LOG = logging.getLogger(__name__)
