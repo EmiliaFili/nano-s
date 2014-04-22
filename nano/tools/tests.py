@@ -1,4 +1,8 @@
-from django.utils.timezone import now as tznow                                                                                                                                             
+# coding: utf-8
+
+from __future__ import unicode_literals
+
+from django.utils.timezone import now as tznow
 from django.test import TestCase
 
 from nano.tools.models import *
@@ -104,3 +108,50 @@ class FunctionTest(TestCase):
         request.session = {}
         result = pop_error(request)
         self.assertEqual(result, None)
+
+    def test_asciify(self):
+        self.assertEqual('', asciify(''))
+        self.assertEqual('abcABC123', asciify('abcABC123'))
+        self.assertEqual('blabrsyltety', asciify('blåbærsyltetøy'))
+
+    def test_grouper_nothing_to_group(self):
+        self.assertEqual([], list(grouper(0, '')))
+        self.assertEqual([], list(grouper(0, 'abc')))
+        self.assertEqual([], list(grouper(1, '')))
+        self.assertEqual([], list(grouper(2, '')))
+
+    def test_grouper(self):
+        self.assertEqual(
+            [('a',), ('b',), ('c',)],
+            list(grouper(1, 'abc'))
+        )
+        self.assertEqual(
+            [('a', u'b'), ('c', None)],
+            list(grouper(2, 'abc'))
+        )
+        self.assertEqual(
+            [(u'a', u'b', u'c')],
+            list(grouper(3, 'abc'))
+        )
+        self.assertEqual(
+            [(u'a', u'b', u'c', None)],
+            list(grouper(4, 'abc'))
+        )
+
+    def test_grouper_fillvalue(self):
+        self.assertEqual(
+            [('a',), ('b',), ('c',)],
+            list(grouper(1, 'abc', fillvalue='X'))
+        )
+        self.assertEqual(
+            [('a', 'b'), ('c', 'X')],
+            list(grouper(2, 'abc', fillvalue='X'))
+        )
+        self.assertEqual(
+            [('a', 'b', 'c')],
+            list(grouper(3, 'abc', fillvalue='X'))
+        )
+        self.assertEqual(
+            [('a', 'b', 'c', 'X')],
+            list(grouper(4, 'abc', fillvalue='X'))
+        )
