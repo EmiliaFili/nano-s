@@ -1,0 +1,11 @@
+language: python
+install:
+  - pip install tox
+env:
+  - TOXENV=py27-django1.5
+  - TOXENV=py27-django1.6
+  - TOXENV=py33-django1.5
+  - TOXENV=py33-django1.6
+  - TOXENV=coverage
+script:
+  - tox -e $TOXENV
