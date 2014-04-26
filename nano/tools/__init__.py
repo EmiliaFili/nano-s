@@ -30,10 +30,12 @@ def pop_error(request):
     return error
 
 def asciify(string):
-    """Convert unicode string to ascii, normalizing with NFKD"""
+    """Convert unicode string to ascii, normalizing with NFKD
+
+    Strips away all non-ascii symbols"""
 
     string = unicodedata.normalize('NFKD', string)
-    return string.encode('ascii', 'ignore')
+    return string.encode('ascii', 'ignore').decode('ascii')
 
 def grouper(n, iterable, fillvalue=None):
     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
