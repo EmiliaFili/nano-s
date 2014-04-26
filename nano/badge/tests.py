@@ -1,8 +1,11 @@
+from __future__ import unicode_literals
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 
 from nano.badge.models import Badge
 from nano.badge import add_badge, batchbadge
+from nano.badge.views import ListBadgeView
 
 class BadgeTest(TestCase):
 
@@ -23,11 +26,11 @@ class BadgeManagerTest(TestCase):
     def test_get_all_recipients(self):
         result = list(Badge.objects.get_all_recipients())
         self.assertEqual(result, self.users[:5])
-        
+
     def test_get_all_nonrecipients(self):
         result = list(Badge.objects.get_all_nonrecipients())
         self.assertEqual(result, self.users[5:])
-        
+
 class BadgeFunctionsTest(TestCase):
 
     def setUp(self):
@@ -48,3 +51,11 @@ class BadgeFunctionsTest(TestCase):
         self.assertEqual(list(self.badge.receivers.all()), self.users[:2])
         batchbadge(self.badge, User.objects.all())
         self.assertEqual(list(self.badge.receivers.all()), self.users)
+
+class BadgeMixinTest(TestCase):
+
+    def test_get_context_data(self):
+        bm = ListBadgeView()
+        bm.object_list = None # set during as_view in 1.6
+        context = bm.get_context_data(object_list=None) # argument in 1.5
+        self.assertEqual(context['me'], 'badge')
