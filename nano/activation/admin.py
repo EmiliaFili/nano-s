@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from nano.blog.models import *
 from nano.activation.models import Key
 
 class KeyAdmin(admin.ModelAdmin):
