@@ -12,11 +12,8 @@ from django.conf import settings
 from django.test.utils import get_runner
 
 if __name__ == '__main__':
-    try: # Django 1.7+
-        from django import setup
-        setup()
-    except ImportError:
-        pass
+    from django import setup
+    setup()
 
     options = {
         'verbosity': 0,

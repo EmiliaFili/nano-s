@@ -2,7 +2,7 @@
 Nano tools
 ==========
 
-This is a set of nano-size tools and apps for Django 1.3 and later.
+This is a set of nano-size tools and apps for Django 1.8 and later.
 
 Currently included:
 
@@ -32,12 +32,6 @@ user
 
 tools
     Utility-functions used by the above apps
-
-Dependencies
-------------
-
-This version will run on Django 1.3 if you rewrite the templates
-(search for **{% url '**) and Django 1.4 and newer otherwise.
 
 Installation
 ------------
