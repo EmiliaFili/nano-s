@@ -2,8 +2,8 @@
 Wrapper for loading templates from the filesystem.
 """
 
+from django.apps import apps
 from django.conf import settings
-from django.db.models import get_model
 from django.template.base import TemplateDoesNotExist
 from django.utils._os import safe_join
 
@@ -17,10 +17,10 @@ except:
 
 class Loader(BaseLoader):
     is_usable = True
-    chunk_model = get_model('chunk', 'Chunk')
-    chunk_model_name = chunk_model.__name__
 
     def load_template_source(self, template_name, template_dirs=None):
+        chunk_model = apps.get_model('chunk', 'Chunk')
+        chunk_model_name = chunk_model.__name__
         template_id = (self.chunk_model_name, template_name)
         try:
             chunk = self.chunk_model.objects.get(slug=template_name)

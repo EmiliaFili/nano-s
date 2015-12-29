@@ -6,18 +6,10 @@ from __future__ import unicode_literals
 
 from django.utils.encoding import force_text
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from django.core import urlresolvers
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Avoid warning/exception in 1.7+
-try:
-    # >= Django 1.7
-    from django.contrib.contenttypes import fields as generic
-except ImportError:
-    # < Django 1.7
-    from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields as generic
 
 
 class UnorderedTreeManager(models.Manager):
@@ -121,7 +113,7 @@ class GenericForeignKeyAbstractModel(models.Model):
     """
 
     # Content-object field
-    content_type = models.ForeignKey(ContentType, verbose_name=_('content type'), related_name="content_type_set_for_%(class)s")
+    content_type = models.ForeignKey('contenttypes.ContentType', verbose_name=_('content type'), related_name="content_type_set_for_%(class)s")
     object_pk = models.TextField(_('object ID'))
     content_object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_pk")
 
