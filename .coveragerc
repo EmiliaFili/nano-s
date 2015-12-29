@@ -2,8 +2,5 @@
 omit=.tox/*
 branch=True
 
-[html]
-omit=.tox/*
-
 [report]
 omit=.tox/*
