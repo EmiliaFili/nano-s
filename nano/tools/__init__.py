@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+default_app_config = 'nano.tools.apps.NanoToolsConfig'
+
 import logging
 import unicodedata
 
@@ -10,12 +12,11 @@ except ImportError: # py2
 
 _LOG = logging.getLogger(__name__)
 
+from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.shortcuts import render
 from django.template import RequestContext, loader, Context
-from django.db.models import get_model
-from django.contrib.auth import get_user_model
 
 class SiteProfileNotAvailable(Exception):
     pass
@@ -51,7 +52,7 @@ def get_profile_model(raise_on_error=True):
         return None
     try:
         app_label, model_name = settings.AUTH_PROFILE_MODULE.split('.')
-        model = get_model(app_label, model_name)
+        model = apps.get_model(app_label, model_name)
     except ImportError:
         error = "Could not import the profile '%s' given in AUTH_PROFILE_MODULE" % settings.AUTH_PROFILE_MODULE
         _LOG.error(error)

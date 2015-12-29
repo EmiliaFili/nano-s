@@ -1,6 +1,8 @@
 import random
 import os
 
+default_app_config = 'nano.activation.apps.NanoActivationConfig'
+
 STORAGE_PATH = '/tmp'
 FILENAME_PATTERN = 'unique_key-%s.list'
 NUMERALS = '0123456789abcdefghijklmnopqrstuvwxyz'

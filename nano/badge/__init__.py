@@ -1,3 +1,4 @@
+default_app_config = 'nano.badge.apps.NanoBadgeConfig'
 
 def add_badge(badge, model):
     "Put a badge on a model"
