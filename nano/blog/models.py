@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 
-from nano.blog.settings import TAGGING, TAGGIT, NANO_BLOG_TAGS
+from nano.blog.settings import NANO_BLOG_TAGS
 
 # Optional support for django-taggit
 # For some unfathomable reason this cannot be imported inside the class
 # as of Django 1.3
-if NANO_BLOG_TAGS and NANO_BLOG_TAGS == TAGGIT:
+if NANO_BLOG_TAGS:
     from taggit.managers import TaggableManager
 
 @python_2_unicode_compatible
@@ -18,7 +18,7 @@ class Entry(models.Model):
     pub_date = models.DateTimeField()
 
     # Optional support for django-taggit
-    if NANO_BLOG_TAGS and NANO_BLOG_TAGS == TAGGIT:
+    if NANO_BLOG_TAGS:
         tags = TaggableManager(blank=True)
 
     class Meta:
@@ -29,7 +29,3 @@ class Entry(models.Model):
 
     def __str__(self):
         return self.headline
-
-# Optional support for django-tagging
-if NANO_BLOG_TAGS and NANO_BLOG_TAGS == TAGGING:
-    TAGGING.register(Entry)

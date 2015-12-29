@@ -5,10 +5,7 @@ blog
 ====
 A very basic blog-app.
 
-It is also possible to convert from
-``django-tagging`` to ``django-taggit`` using the management command
-``migrate_tagging_to_taggit``. This will convert *all* tags, not
-just those for blog entries.
+It has optional suppport for `django-taggit`.
 
 .. automodule:: nano.blog
 
@@ -30,9 +27,7 @@ Changes to settings
 -------------------
 
 NANO_BLOG_USE_TAGS (optional)
-    Set to True to use `django-taggit` or `django-tagging` if either is
-    installed. ``django-taggit`` will be preferred if both are
-    installed.
+    Set to True to use `django-taggit` if it is installed.
 
     **Default**: Not set
 

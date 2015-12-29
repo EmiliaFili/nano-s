@@ -51,13 +51,8 @@ is any of the tools listed above except ``tools``.
 blog
 ++++
 
-Blog entries can be tagged using ``django-taggit`` or ``django-tagging``
-if either of those is in INSTALLED_APPS *and* NANO_BLOG_USE_TAGS
-is set to True in settings. It will prefer ``django-taggit``. It
-is also possible to convert from ``django-tagging`` to
-``django-taggit`` using the management command
-``migrate_tagging_to_taggit``. This will convert *all* tags, not
-just those for blog entries.
+Blog entries can be tagged using ``django-taggit`` if it is in
+INSTALLED_APPS *and* NANO_BLOG_USE_TAGS is set to True in settings.
 
 chunk
 +++++

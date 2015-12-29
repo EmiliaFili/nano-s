@@ -2,36 +2,19 @@
 from django.contrib import admin
 
 from nano.blog.models import *
-from nano.blog.settings import TAGGING, TAGGIT, NANO_BLOG_TAGS
+from nano.blog.settings import NANO_BLOG_TAGS
 
 tag_devel = None
 untag_devel = None
 if NANO_BLOG_TAGS:
 
-    if NANO_BLOG_TAGS == TAGGIT:
+    def tag_devel(modeladmin, request, queryset):
+        for entry in queryset:
+            entry.tags.add('devel')
 
-        def tag_devel(modeladmin, request, queryset):
-            for entry in queryset:
-                entry.tags.add('devel')
-
-        def untag_devel(modeladmin, request, queryset):
-            for entry in queryset:
-                entry.tags.remove('devel')
-
-    elif NANO_BLOG_TAGS == TAGGING:
-        Tag = TAGGING.models.Tag
-
-        def tag_devel(modeladmin, request, queryset):
-            for entry in queryset:
-                Tag.objects.add_tag(entry, 'devel')
-
-        def untag_devel(modeladmin, request, queryset):
-            for entry in queryset:
-                start, _, end = entry.tags.partition('devel')
-                if not end:
-                    continue
-                entry.tags = '%s %s' % (start.strip(), end.strip())
-                entry.save()
+    def untag_devel(modeladmin, request, queryset):
+        for entry in queryset:
+            entry.tags.remove('devel')
 
     tag_devel.short_description = "Tag selected entries with 'devel'"
     untag_devel.short_description = "Remove 'devel'-tag from selected entries"
