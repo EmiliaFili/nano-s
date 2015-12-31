@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Release 0.9.2-0.9.4
+-------------------
+
+Compatible with Django 1.8
+
 Release 0.9.1
 -------------
 
