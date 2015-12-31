@@ -1,6 +1,22 @@
 Changelog
 =========
 
+Planned
+-------
+
+* Python 3 only, 3.5 and newer
+* Only support Django 1.11 and newer
+
+Next release
+------------
+
+* Tests, with tox and Travis
+* Supports Python 2.7, 3.5 and 3.6
+* Supports Django 1.8, 1.9, 1.10 and 1.11
+* Removed support for django-tagging, including conversion aide
+* Last release that supports Python 2.7
+* Last release that supports Django 1.8, 1.9 and 1.10
+
 Release 0.9.2-0.9.4
 -------------------
 
