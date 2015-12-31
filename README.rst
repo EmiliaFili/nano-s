@@ -88,4 +88,4 @@ NANO_USER_BLOG_TEMPLATE
     **Default:** ``blog/new_user.html``
 
 
-:Version: 0.9
+:Version: 0.9.4
