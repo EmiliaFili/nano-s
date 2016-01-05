@@ -36,7 +36,7 @@ class NanoUserExistsError(NanoUserError):
 #     return error
 
 def random_password():
-    sample_space = string.letters + string.digits + r'!#$%&()*+,-.:;=?_'
+    sample_space = string.ascii_letters + string.digits + r'!#$%&()*+,-.:;=?_'
     outlist = []
     for i in range(1,8):
         chars = sample(sample_space, 2)
