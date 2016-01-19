@@ -22,7 +22,7 @@ def get_user(request, **kwargs):
         pass
     user = kwargs.get('user', None) or request.REQUEST.get('user', None)
     object_id = kwargs.get('object_id', None) or request.REQUEST.get('object_id', None)
-    uid = filter(None, (user, object_id))[0]
+    uid = list(filter(None, (user, object_id)))[0]
     try:
         return User.objects.get(id=int(uid))
     except User.DoesNotExist:
