@@ -4,7 +4,7 @@ from unittest import TestCase as LightTestCase
 from datetime import timedelta
 
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils.timezone import now as tznow
 
 from nano.activation.models import activate, Key, ActivationKeyError
@@ -13,6 +13,7 @@ from nano.activation import to_base, NUMERALS, generate_keys, baseNgenerator
 class KeyTest(TestCase):
 
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create(username='test')
 
     def test_str(self):
@@ -51,6 +52,7 @@ class KeyTest(TestCase):
 class KeyManagerTest(TestCase):
 
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create(username='test')
         self.keys = []
         for i in range(10):

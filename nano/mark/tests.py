@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from nano.mark.models import MarkedMixin, Mark, MarkType
 
@@ -21,6 +21,7 @@ class MarkTypeTest(TestCase):
 class MarkTest(TestCase):
 
     def setUp(self):
+        User = get_user_model()
         self.fave = MarkType.objects.create(name='Fave')
         self.flag = MarkType.objects.create(name='Flag')
         self.scrambled = MarkType.objects.create(name='Scrambled')
@@ -34,6 +35,7 @@ class MarkTest(TestCase):
 
 class MarkedMixinTest(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.fave = MarkType.objects.create(name='Fave')
         self.flag = MarkType.objects.create(name='Flag')
         self.scrambled = MarkType.objects.create(name='Scrambled')

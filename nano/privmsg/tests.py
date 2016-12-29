@@ -4,10 +4,11 @@ from django.test import TestCase
 
 from nano.privmsg.models import PM
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 class PMTest(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.sender = User.objects.create(username='Sender')
         self.recipient = User.objects.create(username='Recipient')
 

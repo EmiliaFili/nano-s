@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 
 from nano.comments.models import Comment
@@ -11,6 +11,7 @@ class Item(models.Model):
 class CommentTest(TestCase):
 
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create(username='user')
         self.item = Item.objects.create(slug='Commented item')
         item_dict = {
