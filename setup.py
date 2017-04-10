@@ -21,7 +21,6 @@ packages=(
         'nano.comments',
         'nano.countries',
         'nano.faq',
-        'nano.link',
         'nano.mark',
         'nano.privmsg',
         'nano.tools',
