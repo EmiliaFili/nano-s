@@ -4,6 +4,7 @@ from math import ceil
 
 from django import template
 from django.core.urlresolvers import reverse
+from django.utils.html import format_html, mark_safe
 
 from nano.badge.models import Badge
 from nano.tools import grouper
@@ -32,7 +33,7 @@ def sum_badges(user):
     return levels
 
 def get_badges_for_user(user):
-    inner_template = '<span class="b%i" title="%s %s badge%s">%s</span>%i'
+    inner_template = '<span class="b{}" title="{} {} badge{}">{}</span>{}'
     levels = sum_badges(user)
     sorted_levels = reversed(sorted(levels.keys()))
     badge_list = []
@@ -41,30 +42,31 @@ def get_badges_for_user(user):
         symbol = SYMBOLS[level]
         num_levels = levels[level]
         plural = 's' if num_levels > 1 else ''
-        badge_list.append(inner_template % (level, num_levels, name, plural, symbol, num_levels))
+        badge_list.append(format_html(inner_template, level, num_levels, name, plural, symbol, num_levels))
     return badge_list
 
 @register.simple_tag
 def show_badges(user):
-    outer_template = '<span>%s</span>'
-
+    outer_template = '<span>{}</span>'
     badge_list = get_badges_for_user(user)
 
     if badge_list:
-        return outer_template % '\xa0'.join(badge_list)
+        out = format_html(outer_template, mark_safe('\xa0'.join(badge_list)))
+        print(out)
+        return out
     return ''
 
 @register.simple_tag
 def show_badges_as_table(user, cols=4):
-    outer_template = '<table>%s</table>'
-    cell = '<td>%s</td>'
-    row = '<tr>%s</tr>\n'
-    single_col = '<tr><td>%s</td></tr>\n'
+    outer_template = '<table>{}</table>'
+    cell = '<td>{}</td>'
+    row = '<tr>{}</tr>\n'
+    single_col = '<tr><td>{}</td></tr>\n'
 
     badge_list = get_badges_for_user(user)
 
     if cols == 1:
-        return [single_col % badge for badge in badge_list]
+        return [format_html(single_col, badge) for badge in badge_list]
     elif cols > 1:
         piecesize = int(ceil(len(badge_list) / float(cols)))
         badge_lists = grouper(piecesize, badge_list)
@@ -73,25 +75,25 @@ def show_badges_as_table(user, cols=4):
         for p in range(piecesize):
             inner = []
             for i in go_over:
-                inner.append(cell % badge_list[i][p])
-            outer.append(row % ''.join(inner))
+                inner.append(format_html(cell, badge_list[i][p]))
+            outer.append(format_html(row, ''.join(inner)))
 
-    return outer_template % ''.join(outer)
+    return format_html(outer_template, ''.join(outer))
 
 @register.simple_tag
 def show_badge(badge):
     if not badge: return ''
-    template = '<span class="badge"><a href="%(link)s"><span class="b%(level)i" >%(symbol)s</span> %(name)s</a></span>'
+    template = '<span class="badge"><a href="{link}"><span class="b{level}" >{symbol}</span> {name}</a></span>'
     fillin = {
         'level': badge.level,
         'symbol': SYMBOLS[badge.level],
         'name': badge.name,
-        'link': reverse('badge-detail', args=[badge.id]),
+        'link': mark_safe(reverse('badge-detail', args=[badge.id])),
     }
-    return template % fillin
+    return format_html(template, **fillin)
 
 @register.simple_tag
 def show_badge_and_freq(badge):
-    template = '<span class="badge-freq">%s (%i)</span>'
+    template = '<span class="badge-freq">{} ({})</span>'
     badge_text = show_badge(badge)
-    return template % (badge_text, badge.receivers.count())
+    return format_html(template, badge_text, badge.receivers.count())
