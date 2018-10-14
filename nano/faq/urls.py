@@ -1,7 +1,8 @@
-from django.conf.urls import *
+from django.conf.urls import url
 
 from nano.faq import views
 
-urlpatterns = patterns('',
+
+urlpatterns = [
     url(r'^$',     views.list_faqs),
-)
+]

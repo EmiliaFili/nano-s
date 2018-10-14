@@ -9,12 +9,8 @@ except ImportError:
 from nano.comments import views
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$',         views.list_comments, name='comments-list-comments'),
     url(r'^post$',     views.post_comment, name='comments-post-comment'),
-)
-
-urlpatterns += patterns('',
     url(r'^cr/(\d+)/(.+)/$', shortcut, name='comments-url-redirect'),
-)
-
+]
