@@ -18,7 +18,14 @@ class UnorderedTreeManager(models.Manager):
         return self.get_queryset().filter(part_of__isnull=True)
 
 class UnorderedTreeMixin(models.Model):
-    part_of = models.ForeignKey('self', blank=True, null=True, default=None, related_name='has_%(class)s_children')
+    part_of = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        default=None,
+        related_name='has_%(class)s_children'
+    )
     path = models.CharField(max_length=255, blank=True, default='')
 
     tree = UnorderedTreeManager()
@@ -113,7 +120,12 @@ class GenericForeignKeyAbstractModel(models.Model):
     """
 
     # Content-object field
-    content_type = models.ForeignKey('contenttypes.ContentType', verbose_name=_('content type'), related_name="content_type_set_for_%(class)s")
+    content_type = models.ForeignKey(
+        'contenttypes.ContentType',
+        on_delete=models.CASCADE,
+        verbose_name=_('content type'),
+        related_name="content_type_set_for_%(class)s",
+    )
     object_pk = models.TextField(_('object ID'))
     content_object = generic.GenericForeignKey(ct_field="content_type", fk_field="object_pk")
 

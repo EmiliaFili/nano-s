@@ -50,7 +50,13 @@ class Key(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     expires = models.DateTimeField(blank=True, null=True)
     activated = models.DateTimeField(blank=True, null=True)
-    activated_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='activation_keys')
+    activated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='activation_keys'
+    )
 
     objects = KeyManager()
 

@@ -12,8 +12,13 @@ COMMENT_MAX_LENGTH = getattr(settings,'COMMENT_MAX_LENGTH',3000)
 
 @python_2_unicode_compatible
 class Comment(GenericForeignKeyAbstractModel, UnorderedTreeMixin):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-            blank=True, null=True, related_name="%(class)s_comments") 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="%(class)s_comments",
+    )
     comment = models.TextField(max_length=COMMENT_MAX_LENGTH)
     comment_xhtml = models.TextField(editable=False)
     added = models.DateTimeField(default=tznow)

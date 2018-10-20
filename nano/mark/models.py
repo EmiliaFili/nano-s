@@ -23,7 +23,7 @@ class MarkedMixin(models.Model):
     def marks(self):
         ct = ContentType.objects.get_for_model(self)
         return Mark.objects.filter(content_type = ct, object_pk = force_text(self.pk))
-    
+
     def flagged(self):
         return self.marks.filter(marktype__slug='flag')
 
@@ -61,9 +61,17 @@ class MarkType(models.Model):
 
 @python_2_unicode_compatible
 class Mark(GenericForeignKeyAbstractModel):
-    marked_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'), related_name="marks")
+    marked_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name=_('user'),
+        related_name="marks"
+    )
     marked_at = models.DateTimeField(_('date/time marked'), default=tznow)
-    marktype = models.ForeignKey(MarkType)
+    marktype = models.ForeignKey(
+        MarkType,
+        on_delete=models.CASCADE,
+    )
     comment = models.CharField(max_length=256, blank=True, null=True)
 
     objects = MarksManager()
@@ -77,7 +85,7 @@ class Mark(GenericForeignKeyAbstractModel):
         get_latest_by = 'marked_at'
 
     def __str__(self):
-        return "%s have marked %s" % (self.marked_by, self.content_object)    
+        return "%s have marked %s" % (self.marked_by, self.content_object)
 
     def save(self, parent=None, *args, **kwargs):
         if self.marked_at is None:

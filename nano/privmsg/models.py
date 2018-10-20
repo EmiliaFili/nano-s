@@ -38,9 +38,17 @@ class PMManager(models.Manager):
 class PM(AbstractText):
     subject = models.CharField(max_length=64, blank=True, default='')
     sent = models.DateTimeField(default=tznow, editable=False)
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='pms_sent')
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='pms_sent',
+    )
     sender_deleted = models.BooleanField(default=False)
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='pms_received')
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='pms_received',
+    )
     recipient_archived = models.BooleanField(default=False)
     recipient_deleted = models.BooleanField(default=False)
 
