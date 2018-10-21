@@ -7,9 +7,8 @@ from django.test import TestCase
 
 from nano.tools.models import *
 from nano.tools import *
+from nano.tools.tests.models import TreeItem
 
-class TreeItem(UnorderedTreeMixin):
-    pass
 
 class TreeMixinTest(TestCase):
 

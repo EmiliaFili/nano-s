@@ -4,9 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 
 from nano.comments.models import Comment
+from nano.comments.tests.models import Item
 
-class Item(models.Model):
-    slug = models.SlugField(max_length=30)
 
 class CommentTest(TestCase):
 

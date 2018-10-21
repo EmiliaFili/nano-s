@@ -1,11 +1,9 @@
 from django.test import TestCase
-from django.db import models
 from django.contrib.auth import get_user_model
 
-from nano.mark.models import MarkedMixin, Mark, MarkType
+from nano.mark.models import Mark, MarkType
+from nano.mark.tests.models import Item
 
-class Item(MarkedMixin):
-    slug = models.SlugField(max_length=30)
 
 class MarkTypeTest(TestCase):
 
@@ -17,6 +15,7 @@ class MarkTypeTest(TestCase):
 
     def test_str(self):
         self.assertEqual(str(self.fave), 'Fave')
+
 
 class MarkTest(TestCase):
 
@@ -32,6 +31,7 @@ class MarkTest(TestCase):
     def test_str(self):
         item = Mark(marktype=self.fave, marked_by=self.user, object_pk=str(self.item.pk))
         self.assertEqual(str(item), "%s have marked %s" % (self.user, item.content_object))
+
 
 class MarkedMixinTest(TestCase):
     def setUp(self):

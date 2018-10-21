@@ -8,11 +8,14 @@ APPS = [
     'nano.blog',
     'nano.chunk',
     'nano.comments',
+    'nano.comments.tests',
     'nano.countries',
     'nano.faq',
     'nano.mark',
+    'nano.mark.tests',
     'nano.privmsg',
     'nano.tools',
+    'nano.tools.tests',
     'nano.user',
 ]
 
