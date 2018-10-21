@@ -5,18 +5,19 @@ from __future__ import unicode_literals
 import sys
 import os
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'nano.tests.settings'
-sys.path.append('.')
-
 from django.conf import settings
 from django.test.utils import get_runner
 
 if __name__ == '__main__':
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+    sys.path.append('.')
+
     from django import setup
     setup()
 
     options = {
-        'verbosity': 0,
+        'verbosity': 2,
+        'top_level': '.',
     }
 
     TestRunner = get_runner(settings)

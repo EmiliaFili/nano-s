@@ -31,3 +31,5 @@ INSTALLED_APPS = [
 ] + APPS
 
 MIDDLEWARE_CLASSES = ()
+
+ROOT_URLCONF = 'tests.urls'
