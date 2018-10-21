@@ -16,6 +16,7 @@ class UnorderedTreeManager(models.Manager):
         "Return a list of tree roots, nodes having no parents"
         return self.get_queryset().filter(part_of__isnull=True)
 
+
 class UnorderedTreeMixin(models.Model):
     part_of = models.ForeignKey(
         'self',
@@ -26,8 +27,6 @@ class UnorderedTreeMixin(models.Model):
         related_name='has_%(class)s_children'
     )
     path = models.CharField(max_length=255, blank=True, default='')
-
-    tree = UnorderedTreeManager()
 
     _sep = '/'
 
@@ -54,17 +53,28 @@ class UnorderedTreeMixin(models.Model):
         "Count how far down in the tree self is"
         return force_text(self.path).count(self._sep)
 
-    def roots(self):
+    @classmethod
+    def roots(cls):
         "Get all roots, nodes without parents"
-        return self._default_manager.filter(part_of__isnull=True)
+        return cls.tree.roots()
+
+    @classmethod
+    def get_path_for_tree(cls, treeobj):
+        "Get all ancestors in a path"
+        return [cls.tree.get(id=p) for p in force_text(treeobj.path).split(treeobj._sep) if p]
 
     def get_path(self):
         "Get all ancestors, ordered from root to self"
-        return [self._default_manager.get(id=p) for p in force_text(self.path).split(self._sep) if p]
+        return self.get_path_for_tree(self)
+
+    @classmethod
+    def get_descendants_for_tree(cls, treeobj):
+        "Get all descendants in no particular order"
+        return cls.tree.filter(path__startswith=treeobj.path).exclude(id=treeobj.id)
 
     def descendants(self):
         "Get all descendants in no particular order"
-        return self._default_manager.filter(path__startswith=self.path).exclude(id=self.id)
+        return self.get_descendants_for_tree(self)
 
     def parent(self):
         "Get parent of self"
@@ -95,6 +105,7 @@ class UnorderedTreeMixin(models.Model):
         """Check if self is a leaf. Leaves have no descendants"""
         return self.descendants().count() == 0
 
+
 class AbstractText(models.Model):
     "Denormalized storage of text"
     DEFAULT_TYPE = 'plaintext'
@@ -112,6 +123,7 @@ class AbstractText(models.Model):
             if formatters:
                 self.text_formatted = formatters(self.text_type)
         super(AbstractText, self).save(*args, **kwargs)
+
 
 class GenericForeignKeyAbstractModel(models.Model):
     """

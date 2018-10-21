@@ -6,7 +6,9 @@ from django.utils.timezone import now as tznow
 from django.conf import settings
 from django.db import models
 
-from nano.tools.models import UnorderedTreeMixin, GenericForeignKeyAbstractModel
+from nano.tools.models import GenericForeignKeyAbstractModel
+from nano.tools.models import UnorderedTreeManager
+from nano.tools.models import UnorderedTreeMixin
 
 COMMENT_MAX_LENGTH = getattr(settings,'COMMENT_MAX_LENGTH',3000)
 
@@ -26,6 +28,7 @@ class Comment(GenericForeignKeyAbstractModel, UnorderedTreeMixin):
     is_scrambled = models.BooleanField(default=False)
 
     objects = models.Manager()
+    tree = UnorderedTreeManager()
 
     class Meta:
         db_table = "nano_comments_comment"
