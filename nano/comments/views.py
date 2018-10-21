@@ -9,9 +9,12 @@ from django.template import loader, RequestContext
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.core.urlresolvers import resolve
 from django.views.generic import ListView
 from django.utils.html import escape
+try:
+    from django.urls import resolve
+except ImportError:  # Django < 1.10
+    from django.core.urlresolvers import resolve
 
 from nano.comments.models import Comment
 from nano.comments.forms import *

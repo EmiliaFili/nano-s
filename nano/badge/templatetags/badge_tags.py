@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 from math import ceil
 
 from django import template
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except:  # Django < 1.10
+    from django.core.urlresolvers import reverse
 from django.utils.html import format_html, mark_safe
 
 from nano.badge.models import Badge

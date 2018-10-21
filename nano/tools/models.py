@@ -6,7 +6,6 @@ from __future__ import unicode_literals
 
 from django.utils.encoding import force_text
 from django.conf import settings
-from django.core import urlresolvers
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import fields as generic

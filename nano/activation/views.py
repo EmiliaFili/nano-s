@@ -4,7 +4,10 @@ _LOG = logging.getLogger(__name__)
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except:  # Django < 1.10
+    from django.core.urlresolvers import reverse
 
 from nano.activation.models import Key, ActivationKeyError
 from nano.activation.forms import ActivationForm
