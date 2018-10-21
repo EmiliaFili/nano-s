@@ -31,7 +31,3 @@ INSTALLED_APPS = [
 ] + APPS
 
 MIDDLEWARE_CLASSES = ()
-
-if django.VERSION[:2] < (1, 6):
-    INSTALLED_APPS += ['discover_runner']
-    TEST_RUNNER = 'discover_runner.DiscoverRunner'
