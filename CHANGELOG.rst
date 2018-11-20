@@ -7,8 +7,10 @@ Planned
 * Python 3 only, 3.5 and newer
 * Only support Django 1.11 and newer
 
-Next release
+Release 0.10
 ------------
+
+Lots.
 
 * Tests, with tox and Travis
 * Supports Python 2.7, 3.5 and 3.6
